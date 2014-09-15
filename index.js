@@ -9,6 +9,8 @@ module.exports = {
 
 function createJSON(options) {
     var defaults = {
+            moduleName: 'angularPoint',
+            constantName: 'offlineXML',
             fileName: 'offlineXML.js',
             //dest: '.',
             src: []
@@ -34,13 +36,13 @@ function createJSON(options) {
             });
 
             q.all(promises).then(function () {
-                var fileContents = 'angular.module(\'angularPoint\').constant(\'offlineXML\', ';
+                var fileContents = 'angular.module(\'' + opts.moduleName + '\').constant(\'' + opts.constantName + '\', ';
                 fileContents += JSON.stringify(offlineXML) + ');';
 
                 fs.writeFile(opts.dest + '/' + opts.fileName, fileContents, {encoding: 'utf8'}, function (err) {
                     if (err) throw err;
                     deferred.resolve(offlineXML);
-                    console.log("Offline XML Constant File Created");
+                    console.log("Parsed XML Constant File Created");
                 });
             });
         });
