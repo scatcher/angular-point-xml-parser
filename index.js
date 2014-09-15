@@ -1,6 +1,6 @@
 var q = require('q');
 var fs = require('fs');
-var _ = require('_');
+var _ = require('lodash');
 
 module.exports = {
     createJSON: createJSON
