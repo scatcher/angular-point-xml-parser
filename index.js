@@ -23,17 +23,13 @@ function createJSON(options) {
     var promises = [];
 
     opts.src.forEach(function (fileDirectory) {
-        fs.readdir(fileDirectory, function (err, files) {
-            if (err) throw err;
-
-            files.forEach(function (fileName) {
-                if (fileName.indexOf('.xml') > -1) {
-                    promises.push(parseFile(fileName, fileDirectory)
-                        .then(function (file) {
-                            offlineXML[fileName.split('.xml')[0]] = file;
-                        }));
-                }
-            });
+        fs.readdirSync(fileDirectory).forEach(function (fileName) {
+            if (fileName.indexOf('.xml') > -1) {
+                promises.push(parseFile(fileName, fileDirectory)
+                    .then(function (file) {
+                        offlineXML[fileName.split('.xml')[0]] = file;
+                    }));
+            }
         });
     });
 
