@@ -20,9 +20,9 @@ function createJSON(options) {
         offlineXML = {};
 
     opts.dest = opts.dest || opts.src[0];
+    var promises = [];
 
     opts.src.forEach(function (fileDirectory) {
-        var promises = [];
         fs.readdir(fileDirectory, function (err, files) {
             if (err) throw err;
 
@@ -34,17 +34,17 @@ function createJSON(options) {
                         }));
                 }
             });
+        });
+    });
 
-            q.all(promises).then(function () {
-                var fileContents = 'angular.module(\'' + opts.moduleName + '\').constant(\'' + opts.constantName + '\', ';
-                fileContents += JSON.stringify(offlineXML) + ');';
+    q.all(promises).then(function () {
+        var fileContents = 'angular.module(\'' + opts.moduleName + '\').constant(\'' + opts.constantName + '\', ';
+        fileContents += JSON.stringify(offlineXML) + ');';
 
-                fs.writeFile(opts.dest + '/' + opts.fileName, fileContents, {encoding: 'utf8'}, function (err) {
-                    if (err) throw err;
-                    deferred.resolve(offlineXML);
-                    console.log("Parsed XML Constant File Created");
-                });
-            });
+        fs.writeFile(opts.dest + '/' + opts.fileName, fileContents, {encoding: 'utf8'}, function (err) {
+            if (err) throw err;
+            deferred.resolve(offlineXML);
+            console.log("Parsed XML Constant File Created");
         });
     });
 
