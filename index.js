@@ -10,7 +10,7 @@ module.exports = {
 function createJSON(options) {
     var defaults = {
             moduleName: 'angularPoint',
-            constantName: 'offlineXML',
+            constantName: 'apCachedXML',
             fileName: 'offlineXML.js',
             //dest: '.',
             src: []
