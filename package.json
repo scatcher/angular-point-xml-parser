@@ -1,0 +1,26 @@
+{
+  "name": "angular-point-xml-parser",
+  "version": "0.0.1",
+  "description": "Grunt task to stringify offline XML files that can then be mocked with $httpBackend.",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scatcher/angular-point-xml-parser.git"
+  },
+  "keywords": [
+    "angular-point"
+  ],
+  "author": "Scott Hatcher",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scatcher/angular-point-xml-parser/issues"
+  },
+  "homepage": "https://github.com/scatcher/angular-point-xml-parser",
+  "devDependencies": {
+    "lodash": "^2.4.1",
+    "q": "^1.0.1"
+  }
+}
