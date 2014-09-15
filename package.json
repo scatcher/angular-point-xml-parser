@@ -14,7 +14,7 @@
     "angular-point"
   ],
   "author": "Scott Hatcher",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/scatcher/angular-point-xml-parser/issues"
   },

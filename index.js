@@ -10,12 +10,14 @@ module.exports = {
 function createJSON(options) {
     var defaults = {
             fileName: 'offlineXML.js',
-            dest: '.',
+            //dest: '.',
             src: []
         },
         deferred = q.defer(),
         opts = _.extend({}, defaults, options),
         offlineXML = {};
+
+    opts.dest = opts.dest || opts.src[0];
 
     opts.src.forEach(function (fileDirectory) {
         var promises = [];

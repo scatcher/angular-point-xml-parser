@@ -1,6 +1,8 @@
 # Logs
 logs
 *.log
+.idea
+node_modules/
 
 # Runtime data
 pids
