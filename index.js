@@ -1,4 +1,3 @@
-var q = require('q');
 var fs = require('fs');
 var _ = require('lodash');
 
@@ -6,7 +5,17 @@ module.exports = {
     createJSON: createJSON
 };
 
-
+/**
+ * @description
+ * Takes folders of cached XHR responses (xml files), escapes the contents, and generates an angular constant object with
+ * properties equaling the name of the file and values being the escaped contents of the file.
+ * @param {object} options
+ * @param {string} [options.constantName='apCachedXML']
+ * @param {string} [options.dest=opts.src[0]] The output location for the file.
+ * @param {string} [options.fileName='offlineXML.js']
+ * @param {string} [options.moduleName='angularPoint']
+ * @param {string[]} [options.src] Folders containing XML files to process.
+ */
 function createJSON(options) {
     var defaults = {
             moduleName: 'angularPoint',
@@ -15,43 +24,28 @@ function createJSON(options) {
             //dest: '.',
             src: []
         },
-        deferred = q.defer(),
         opts = _.extend({}, defaults, options),
         offlineXML = {};
 
     opts.dest = opts.dest || opts.src[0];
-    var promises = [];
 
+    /** Process each of the src directories */
     opts.src.forEach(function (fileDirectory) {
+        /** Go through each XML file in the directory */
         fs.readdirSync(fileDirectory).forEach(function (fileName) {
             if (fileName.indexOf('.xml') > -1) {
-                promises.push(parseFile(fileName, fileDirectory)
-                    .then(function (file) {
-                        offlineXML[fileName.split('.xml')[0]] = file;
-                    }));
+                /** Create a property on the offlineXML object with a key equaling the file name (without .xml) and
+                 * value being the contents of the file */
+                offlineXML[fileName.split('.xml')[0]] =
+                    fs.readFileSync(fileDirectory + '/' + fileName, {encoding: 'utf8'});
             }
         });
     });
 
-    q.all(promises).then(function () {
-        var fileContents = 'angular.module(\'' + opts.moduleName + '\').constant(\'' + opts.constantName + '\', ';
-        fileContents += JSON.stringify(offlineXML) + ');';
+    var fileContents = 'angular.module(\'' + opts.moduleName + '\').constant(\'' + opts.constantName + '\', ';
+    /** Stringify object and indent 4 spaces */
+    fileContents += JSON.stringify(offlineXML, null, 4) + ');';
 
-        fs.writeFile(opts.dest + '/' + opts.fileName, fileContents, {encoding: 'utf8'}, function (err) {
-            if (err) throw err;
-            deferred.resolve(offlineXML);
-            console.log("Parsed XML Constant File Created");
-        });
-    });
-
-    return deferred.promise;
-}
-
-function parseFile(fileName, filePath) {
-    var deferred = q.defer();
-
-    fs.readFile(filePath + '/' + fileName, {encoding: 'utf8'}, function (err, data) {
-        deferred.resolve(data);
-    });
-    return deferred.promise;
+    /** Write file to dest */
+    return fs.writeFileSync(opts.dest + '/' + opts.fileName, fileContents, {encoding: 'utf8'});
 }

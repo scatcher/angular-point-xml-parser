@@ -1,6 +1,6 @@
 {
   "name": "angular-point-xml-parser",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Grunt task to stringify offline XML files that can then be mocked with $httpBackend.",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/scatcher/angular-point-xml-parser",
   "dependencies": {
-    "lodash": "^2.4.1",
-    "q": "^1.0.1"
+    "lodash": "^2.4.1"
   }
 }
