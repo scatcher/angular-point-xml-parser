@@ -34,10 +34,14 @@ function createJSON(options) {
         /** Go through each XML file in the directory */
         fs.readdirSync(fileDirectory).forEach(function (fileName) {
             if (fileName.indexOf('.xml') > -1) {
+                var fileContents = fs.readFileSync(fileDirectory + '/' + fileName, {encoding: 'utf8'});
+                var operation = fileContents.split('Response')[0].split('<');
+                operation = operation[operation.length - 1];
+                console.log(operation);
                 /** Create a property on the offlineXML object with a key equaling the file name (without .xml) and
                  * value being the contents of the file */
-                offlineXML[fileName.split('.xml')[0]] =
-                    fs.readFileSync(fileDirectory + '/' + fileName, {encoding: 'utf8'});
+                offlineXML[operation] = offlineXML[operation] || {};
+                offlineXML[operation][fileName.split('.xml')[0]] = fileContents;
             }
         });
     });
