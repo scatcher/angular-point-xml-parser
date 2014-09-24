@@ -1,5 +1,5 @@
-var fs = require('fs');
-var _ = require('lodash');
+var fs = require('fs'),
+    _ = require('lodash');
 
 module.exports = {
     createJSON: createJSON
@@ -25,7 +25,7 @@ function createJSON(options) {
             src: []
         },
         opts = _.extend({}, defaults, options),
-        offlineXML = {};
+        offlineXML = {operations: {}, lists: {}};
 
     opts.dest = opts.dest || opts.src[0];
 
@@ -37,11 +37,16 @@ function createJSON(options) {
                 var fileContents = fs.readFileSync(fileDirectory + '/' + fileName, {encoding: 'utf8'});
                 var operation = fileContents.split('Response')[0].split('<');
                 operation = operation[operation.length - 1];
-                console.log(operation);
-                /** Create a property on the offlineXML object with a key equaling the file name (without .xml) and
-                 * value being the contents of the file */
-                offlineXML[operation] = offlineXML[operation] || {};
-                offlineXML[operation][fileName.split('.xml')[0]] = fileContents;
+                if(operation === 'GetListItems' || operation == 'GetListItemChangesSinceToken') {
+
+                    offlineXML.lists[fileName.split('.xml')[0]] = offlineXML.lists[fileName.split('.xml')[0]] || {};
+                    offlineXML.lists[fileName.split('.xml')[0]][operation] = fileContents;
+                } else {
+                    /** Create a property on the offlineXML object with a key equaling the file name (without .xml) and
+                     * value being the contents of the file */
+                    offlineXML.operations[operation] = offlineXML.operations[operation] || {};
+                    offlineXML.operations[operation][fileName.split('.xml')[0]] = fileContents;
+                }
             }
         });
     });
