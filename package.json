@@ -1,6 +1,6 @@
 {
   "name": "angular-point-xml-parser",
-  "version": "0.0.10",
+  "version": "0.1.0",
   "description": "Grunt task to stringify offline XML files that can then be mocked with $httpBackend.",
   "main": "index.js",
   "scripts": {

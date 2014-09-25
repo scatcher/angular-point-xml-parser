@@ -44,8 +44,7 @@ function createJSON(options) {
                 } else {
                     /** Create a property on the offlineXML object with a key equaling the file name (without .xml) and
                      * value being the contents of the file */
-                    offlineXML.operations[operation] = offlineXML.operations[operation] || {};
-                    offlineXML.operations[operation][fileName.split('.xml')[0]] = fileContents;
+                    offlineXML.operations[operation] = offlineXML.operations[operation] || fileContents;
                 }
             }
         });
